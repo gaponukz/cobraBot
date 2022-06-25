@@ -1,25 +1,24 @@
 import os
 import json
 import asyncio
-from pyrsistent import s
+from db import UsersList
 
 from web3 import Web3
 from web3 import HTTPProvider
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.dispatcher import filters
 from dotenv import load_dotenv
-
-class UsersList(list):
-    def append(self, __object) -> None:
-        with open('signed_users.json', 'w', encoding='utf-8') as out:
-            super().append(__object)
-            json.dump(self, out, indent=4)
 
 load_dotenv()
 
 bot = Bot(token=os.getenv('TOKEN'))
 dp = Dispatcher(bot)
 web3 = Web3(HTTPProvider(os.getenv('WEB3PROVIDER')))
+
+buttons = types.ReplyKeyboardMarkup(resize_keyboard=True)
+buttons.add(types.KeyboardButton('Set account'))
+buttons.add(types.KeyboardButton('Set language'))
 
 with open('contract.json', 'r', encoding='utf-8') as out:
     contract = json.load(out)
@@ -53,17 +52,48 @@ async def handle_event(event):
     await bot.send_message('1052311571', message)
 
 @dp.message_handler(commands="start")
-async def cmd_test1(message: types.Message):
-    filter_users = [user for user in signed_users if user['id'] == message.from_id]
+async def on_start_message_callback(message: types.Message):
+    find_user = signed_users.find_user(message.from_id)
 
-    if not filter_users:
-        user = {"id": message.from_id, "language": "en"}
+    if not find_user:
+        user = signed_users.get_default_user(message.from_id)
         signed_users.append(user)
     
     else:
-        user = filter_users[0]
+        user = find_user
+    
+    await message.reply(languages[user['language']]["greating"], reply_markup=buttons)
 
-    await message.reply(languages[user['language']]["greating"])
+@dp.message_handler(filters.Text(contains=['Set account'], ignore_case=True))
+async def on_set_account_message_callback(message: types.Message):
+    user = signed_users.find_user(message.from_id)
+    await message.reply(languages[user['language']]["set_account"])
+
+@dp.message_handler(filters.Text(contains=['Set language'], ignore_case=True))
+async def on_set_language_message_callback(message: types.Message):
+    user = signed_users.find_user(message.from_id)
+
+    languages_buttons = types.InlineKeyboardMarkup()\
+        .add(types.InlineKeyboardButton('English', callback_data = "language en"))\
+        .add(types.InlineKeyboardButton('Ukrainian', callback_data = "language ua"))\
+
+    await bot.send_message(
+        message.from_id,
+        languages[user['language']]["select_language"],
+        reply_markup = languages_buttons
+    )
+
+@dp.callback_query_handler(lambda callback: callback.data.startswith('language'))
+async def set_user_language_callback_button(callback_query: types.CallbackQuery):
+    language = callback_query.data.split()[-1]
+    signed_users.edit_user(callback_query.from_user.id, language=language)
+
+    await bot.send_message(callback_query.from_user.id, languages[language]["successfully_set_language"])
+
+@dp.message_handler(filters.Regexp(r'^[0-9]+$'))
+async def on_set_account_refid_callback(message: types.Message):
+    user = signed_users.edit_user(message.from_id, ref_id=message.text)
+    await message.reply(languages[user['language']]["successfully_set_account"])
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()

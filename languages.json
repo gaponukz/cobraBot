@@ -1,6 +1,10 @@
 {
     "en": {
-        "greating": "Hi! I'm a bot. Want to make friends? I was created so that you don't miss any important events in your Forsage account and can make even more money with me!"
+        "greating": "Hi! I'm a bot. Want to make friends? I was created so that you don't miss any important events in your Forsage account and can make even more money with me!",
+        "set_account": "✏️ Specify the ID of your account in order to instantly receive related event notifications.",
+        "successfully_set_account": "Account added successfully 👌",
+        "select_language": "🌍 Select a language:",
+        "successfully_set_language": "✅ The language was changed successfully"
     },
-    "ru": {}
+    "ua": {}
 }
