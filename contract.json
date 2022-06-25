@@ -1,13 +1,8 @@
 {
-    "address": "0xC67BB793c6071Fd9eD233A190621689DfFc2506F",
+    "address": "0xb050dECc783EFC1Bb071f7208B9D169E3D3d787f",
     "abi": [
         {
             "inputs": [
-                {
-                    "internalType": "uint8",
-                    "name": "index",
-                    "type": "uint8"
-                },
                 {
                     "internalType": "uint256",
                     "name": "circleCount",
@@ -131,6 +126,19 @@
             ],
             "name": "WinnerPayment",
             "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "currentGameIdIndex",
+            "outputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
         },
         {
             "inputs": [
