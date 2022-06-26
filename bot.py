@@ -44,16 +44,21 @@ async def handle_event(event):
     if event_args['event'] == 'NewGame':
         event_args = event_args['args']['game']
         message = f"New game!\nCircle: {event_args[0]}\nPay: {event_args[1]} and get {event_args[2]}"
+
+        for user in signed_users:
+            await bot.send_message(user['id'], message)
     
     elif event_args['event'] == 'WinnerPayment':
         event_args = event_args['args']
         message = f"New winner!\n{event_args['winner']} get {event_args['game'][-1]}"
+        user = signed_users.find_user_by_address(event_args['winner'])
 
-    await bot.send_message('1052311571', message)
+        if user:
+            await bot.send_message(user['id'], message)
 
 @dp.message_handler(commands="start")
 async def on_start_message_callback(message: types.Message):
-    find_user = signed_users.find_user(message.from_id)
+    find_user = signed_users.find_user_by_id(message.from_id)
 
     if not find_user:
         user = signed_users.get_default_user(message.from_id)
@@ -66,12 +71,12 @@ async def on_start_message_callback(message: types.Message):
 
 @dp.message_handler(filters.Text(contains=['Set account'], ignore_case=True))
 async def on_set_account_message_callback(message: types.Message):
-    user = signed_users.find_user(message.from_id)
+    user = signed_users.find_user_by_id(message.from_id)
     await message.reply(languages[user['language']]["set_account"])
 
 @dp.message_handler(filters.Text(contains=['Set language'], ignore_case=True))
 async def on_set_language_message_callback(message: types.Message):
-    user = signed_users.find_user(message.from_id)
+    user = signed_users.find_user_by_id(message.from_id)
 
     languages_buttons = types.InlineKeyboardMarkup()\
         .add(types.InlineKeyboardButton('English', callback_data = "language en"))\
@@ -93,6 +98,9 @@ async def set_user_language_callback_button(callback_query: types.CallbackQuery)
 @dp.message_handler(filters.Regexp(r'^[0-9]+$'))
 async def on_set_account_refid_callback(message: types.Message):
     user = signed_users.edit_user(message.from_id, ref_id=message.text)
+    address = contract.functions.usersId(int(message.text)).call()
+    user = signed_users.edit_user(message.from_id, address=address)
+
     await message.reply(languages[user['language']]["successfully_set_account"])
 
 if __name__ == "__main__":

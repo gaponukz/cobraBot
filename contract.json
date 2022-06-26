@@ -1,5 +1,5 @@
 {
-    "address": "0x53fE54b53a4878181B55589e038BeC67e1d3c293",
+    "address": "0x96eda6512a07450aF0C7A26C1e5e02cDfed14DFa",
     "abi": [
         {
             "inputs": [
@@ -250,6 +250,25 @@
                     "internalType": "uint256",
                     "name": "invitedId",
                     "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "usersId",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
                 }
             ],
             "stateMutability": "view",

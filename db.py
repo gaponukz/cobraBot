@@ -11,13 +11,18 @@ class UsersList(list):
             super().remove(__object)
             json.dump(self, out, indent=4)
     
-    def find_user(self, _id: int) -> dict | None:
+    def find_user_by_id(self, _id: int) -> dict | None:
         filter_users = [user for user in self if user['id'] == _id]
+
+        return filter_users[0] if filter_users else None
+
+    def find_user_by_address(self, address: str) -> dict | None:
+        filter_users = [user for user in self if user['address'] == address]
 
         return filter_users[0] if filter_users else None
     
     def edit_user(self, user_id: int, **kwargs):
-        user = self.find_user(user_id)
+        user = self.find_user_by_id(user_id)
         self.remove(user)
         user[list(kwargs)[0]] = kwargs[list(kwargs)[0]]
         self.append(user)
