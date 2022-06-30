@@ -107,7 +107,7 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     event_filters = [
         contract.events.NewGame.createFilter(fromBlock='latest'),
-        contract.events.WinnerPayment.createFilter(fromBlock='latest')
+        contract.events.GamePaymentEvent.createFilter(fromBlock='latest')
     ]
 
     loop.create_task(log_loop(event_filters, 2))
