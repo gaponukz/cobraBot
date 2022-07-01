@@ -48,13 +48,23 @@ async def handle_event(event):
         for user in signed_users:
             await bot.send_message(user['id'], message)
     
-    elif event_args['event'] == 'WinnerPayment':
+    elif event_args['event'] == 'GamePaymentEvent':
         event_args = event_args['args']
-        message = f"New winner!\n{event_args['winner']} get {event_args['game'][-1]}"
+        message = f"New winner!\n{event_args['account']} get {event_args['game'][-1] * 0.74}"
         user = signed_users.find_user_by_address(event_args['winner'])
 
         if user:
             await bot.send_message(user['id'], message)
+    
+    elif event_args['event'] == 'ReferalPaymentEvent':
+        event_args = event_args['args']
+        '''
+        message = f"Referal payment!\n{event_args['winner']} get {event_args['game'][-1]}"
+        user = signed_users.find_user_by_address(event_args['winner'])
+
+        if user:
+            await bot.send_message(user['id'], message)
+        '''
 
 @dp.message_handler(commands="start")
 async def on_start_message_callback(message: types.Message):
@@ -107,7 +117,8 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     event_filters = [
         contract.events.NewGame.createFilter(fromBlock='latest'),
-        contract.events.GamePaymentEvent.createFilter(fromBlock='latest')
+        contract.events.GamePaymentEvent.createFilter(fromBlock='latest'),
+        contract.events.ReferalPaymentEvent.createFilter(fromBlock='latest')
     ]
 
     loop.create_task(log_loop(event_filters, 2))

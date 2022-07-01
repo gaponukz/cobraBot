@@ -68,6 +68,14 @@ contract Pyramid {
     }
 
     receive () external payable {
+        _fallback(msg.sender, msg.value);
+    }
+
+    fallback () external payable {
+        _fallback(msg.sender, msg.value);
+    }
+
+    function _fallback(address sender, uint256 value) internal {
         /**
           * @dev This function allow to join the game by sending bnb on contract
           * select game by price
@@ -84,7 +92,7 @@ contract Pyramid {
         }
         
         require(success, "Game not found");
-        _joinToGame(gameId, msg.sender, msg.value);
+        _joinToGame(gameId, sender, value);
     }
 
     function hasAccess(address userAdress) public view returns(bool) {
@@ -128,40 +136,58 @@ contract Pyramid {
     function _joinToGame(uint8 gameId, address sender, uint256 value) internal {
         require (value >= levels[gameId].amountToPay, "Insufficient amount of contribution");
 
-        uint256 index = currentUserIndex[gameId];
+        uint256 index = currentUserIndex[gameId]; // get user game position
 
+        /**
+          * @dev Add user to game, increase game procces index, set user already played in game
+        */
         pools[gameId][index] = registeredUsers[sender];
         currentUserIndex[gameId] += 1;
         userGames[sender][gameId] = true;
-
+        /**
+          * @dev If game progress more them game period start game logic
+        */
         if (index >= levels[gameId].circleCount) {
             for (uint circle = 1; circle <= index / levels[gameId].circleCount; circle++) {
                 uint256 winnerIndex = index -  circle * levels[gameId].circleCount;
-                address payable selectedAddress = pools[gameId][winnerIndex].userAddress;
-
+                address payable selectedAddress = pools[gameId][winnerIndex].userAddress; // get last period user
+                /**
+                  * @dev User get payment if he alredy got payment for 2 times or bought next level
+                */
                 if (userPayments[selectedAddress][gameId] <= 1 || userGames[selectedAddress][gameId+1]) {
+                    /**
+                      * @dev There we distribute the award: circle user + referal (first/second/third levels) + owner payment
+                    */
                     (bool success, ) = selectedAddress.call{value: levels[gameId].amountToPay * baseAward / 100}("");
-                    userPayments[selectedAddress][gameId] += 1;
+                    userPayments[selectedAddress][gameId] += 1; // increase "how many payments get from game" value
 
                     emit GamePaymentEvent(levels[gameId], selectedAddress, success);
 
-                    uint256 userId = pools[gameId][winnerIndex].userId;
-                    uint256 invitedId = pools[gameId][winnerIndex].invitedId;
-                    uint refValue = levels[gameId].amountToPay * firstLevelReferal / 100;
+                    uint256 userId = pools[gameId][winnerIndex].userId; // user (who get payment) id
+                    uint256 invitedId = pools[gameId][winnerIndex].invitedId; // person (who invited this user) id
+                    uint refValue = levels[gameId].amountToPay * firstLevelReferal / 100; // first level referal
 
-                    (success, ) = usersId[invitedId].call{value: refValue}(""); // 10% ref (1 level)
+                    (success, ) = usersId[invitedId].call{value: refValue}("");
 
                     if (success) emit ReferalPaymentEvent(levels[gameId], userId, invitedId, refValue);
 
-                    refValue = levels[gameId].amountToPay * secondLevelReferal / 100;
+                    refValue = levels[gameId].amountToPay * secondLevelReferal / 100; // second level referal
                     (success, ) = registeredUsers[usersId[invitedId]].userAddress.call{value: refValue}(""); // 2% ref (2 level)      
 
                     if (success) emit ReferalPaymentEvent(levels[gameId], invitedId, registeredUsers[usersId[invitedId]].userId, refValue);
 
-                    refValue = levels[gameId].amountToPay * thirdLevelReferal / 100;
+                    refValue = levels[gameId].amountToPay * thirdLevelReferal / 100; // third level referal
                     (success, ) = registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userAddress.call{value: refValue}("");
 
                     if (success) emit ReferalPaymentEvent(levels[gameId], registeredUsers[usersId[invitedId]].userId, registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userId, refValue);
+                    /**
+                      * @dev There contract owner get his 6% game award
+                    */
+                    refValue = levels[gameId].amountToPay * ownerReferal / 100; // owner referal
+                    (success, ) = registeredUsers[contractOwner].userAddress.call{value: refValue}("");
+
+                    if (success) emit ReferalPaymentEvent(levels[gameId], userId, registeredUsers[contractOwner].userId, refValue);
+                
                 }
 
             }
