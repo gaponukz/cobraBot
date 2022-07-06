@@ -112,7 +112,6 @@ contract Pyramid {
         */
         levels[currentGameIdIndex] = Game({ circleCount: circleCount, amountToPay: amountToPay });
         emit NewGame(levels[currentGameIdIndex]);
-        currentGameIdIndex += 1;
     }
 
     function registerUserToGame(uint256 inviterId) external payable noContractAccess {
@@ -136,21 +135,23 @@ contract Pyramid {
     function _joinToGame(uint8 gameId, address sender, uint256 value) internal {
         require (value >= levels[gameId].amountToPay, "Insufficient amount of contribution");
 
-        uint256 index = currentUserIndex[gameId]; // get user game position
-
         /**
           * @dev Add user to game, increase game procces index, set user already played in game
         */
-        pools[gameId][index] = registeredUsers[sender];
+        pools[gameId][currentUserIndex[gameId]] = registeredUsers[sender];
         currentUserIndex[gameId] += 1;
         userGames[sender][gameId] = true;
         /**
           * @dev If game progress more them game period start game logic
         */
-        if (index >= levels[gameId].circleCount) {
-            for (uint circle = 1; circle <= index / levels[gameId].circleCount; circle++) {
-                uint256 winnerIndex = index -  circle * levels[gameId].circleCount;
-                address payable selectedAddress = pools[gameId][winnerIndex].userAddress; // get last period user
+
+        if (currentUserIndex[gameId] >= 3) {
+            uint256 userIndex = currentUserIndex[gameId] / 2;
+            /**
+                * @dev Using tree logic: after branche closing top user get payment
+            */       
+            while (userIndex % 2 != 0) {
+                address selectedAddress = pools[gameId][userIndex].userAddress;
                 /**
                   * @dev User get payment if he alredy got payment for 2 times or bought next level
                 */
@@ -163,8 +164,8 @@ contract Pyramid {
 
                     emit GamePaymentEvent(levels[gameId], selectedAddress, success);
 
-                    uint256 userId = pools[gameId][winnerIndex].userId; // user (who get payment) id
-                    uint256 invitedId = pools[gameId][winnerIndex].invitedId; // person (who invited this user) id
+                    uint256 userId = pools[gameId][userIndex].userId; // user (who get payment) id
+                    uint256 invitedId = pools[gameId][userIndex].invitedId; // person (who invited this user) id
                     uint refValue = levels[gameId].amountToPay * firstLevelReferal / 100; // first level referal
 
                     (success, ) = usersId[invitedId].call{value: refValue}("");
@@ -187,9 +188,9 @@ contract Pyramid {
                     (success, ) = registeredUsers[contractOwner].userAddress.call{value: refValue}("");
 
                     if (success) emit ReferalPaymentEvent(levels[gameId], userId, registeredUsers[contractOwner].userId, refValue);
-                
-                }
 
+                    userIndex /= 2;
+                }
             }
         }
     }
