@@ -95,6 +95,10 @@ contract Pyramid {
         _joinToGame(gameId, sender, value);
     }
 
+    function culcNextWinnerIndex(uint256 index) internal pure returns(uint256) {
+        return index % 2 == 0 ? 0 : index / 2;
+    }
+
     function hasAccess(address userAdress) public view returns(bool) {
         /**
           * @dev This function check in address userAdress in  contractOwner address
@@ -111,6 +115,7 @@ contract Pyramid {
           * @dev This function add new game level (only contract owner access)
         */
         levels[currentGameIdIndex] = Game({ circleCount: circleCount, amountToPay: amountToPay });
+        currentUserIndex[currentGameIdIndex] = 1;
         emit NewGame(levels[currentGameIdIndex]);
     }
 
@@ -134,23 +139,28 @@ contract Pyramid {
 
     function _joinToGame(uint8 gameId, address sender, uint256 value) internal {
         require (value >= levels[gameId].amountToPay, "Insufficient amount of contribution");
-
         /**
           * @dev Add user to game, increase game procces index, set user already played in game
         */
         pools[gameId][currentUserIndex[gameId]] = registeredUsers[sender];
-        currentUserIndex[gameId] += 1;
         userGames[sender][gameId] = true;
         /**
           * @dev If game progress more them game period start game logic
         */
 
         if (currentUserIndex[gameId] >= 3) {
-            uint256 userIndex = currentUserIndex[gameId] / 2;
+            uint256 userIndex = culcNextWinnerIndex(currentUserIndex[gameId]);
             /**
-                * @dev Using tree logic: after branche closing top user get payment
+                * @dev Using tree logic: after branche closing top user get payment. Python code example to generate winner indexes: 
+                * def winner_generator(index: int) -> int:
+                *     next_index = culcNextWinnerIndex(index)
+                *     while (next_index != 0):
+                *         yield next_index
+                *         next_index = _cucl(next_index)
+                *
+                * >>> winner_generator(31): 15, 7, 3, 1
             */       
-            while (userIndex % 2 != 0) {
+            while (userIndex != 0) {
                 address selectedAddress = pools[gameId][userIndex].userAddress;
                 /**
                   * @dev User get payment if he alredy got payment for 2 times or bought next level
@@ -189,9 +199,13 @@ contract Pyramid {
 
                     if (success) emit ReferalPaymentEvent(levels[gameId], userId, registeredUsers[contractOwner].userId, refValue);
 
-                    userIndex /= 2;
+                    userIndex = culcNextWinnerIndex(userIndex);
                 }
             }
         }
+        /**
+          * @dev Increase game procces index
+        */
+        currentUserIndex[gameId] += 1;
     }
 }

@@ -420,11 +420,11 @@
 	},
 	"sources": {
 		"cobraBot/Contract.sol": {
-			"keccak256": "0x4a9f3ec5f67aa7bb660aebea8e58aefe792b64d0cf2a3206b0d1813cdef11e22",
+			"keccak256": "0xcb238f9fcce53cf7a90e10cd255b7c56cf45cb0d875c2b76519d535b0c865d36",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://17422da8314faf6aa6d9a5f88bd465607c91a8906ce23f207bba2e4358b83b29",
-				"dweb:/ipfs/QmREJ3EotkYTro86YCRM35UsV8iRKSpQVuJtouJBdEUdG9"
+				"bzz-raw://004ce5b57f0e39247594edb3852a6f81f75c207ed227ee1ddf0f3fe526ce8272",
+				"dweb:/ipfs/QmVDFDRscs4KMJGf7cdPNcFyKNfUvA8BQvagydBnkryTSV"
 			]
 		}
 	},
