@@ -1,61 +1,6 @@
 {
-    "address": "0xe6d863a2cef4F1CA6Bde7DEFA10D76bc04375C7b",
+    "address": "0x38ebF29e410935B8bD0F0A1e3B65218aF09CFDdB",
     "abi": [
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "circleCount",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "amountToPay",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "sendWinnerAmount",
-                    "type": "uint256"
-                }
-            ],
-            "name": "addGameLevel",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint8",
-                    "name": "gameId",
-                    "type": "uint8"
-                }
-            ],
-            "name": "joinToGame",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "inviterId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "registerUserToGame",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "payable",
-            "type": "function"
-        },
         {
             "inputs": [],
             "stateMutability": "nonpayable",
@@ -65,27 +10,35 @@
             "anonymous": false,
             "inputs": [
                 {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "circleCount",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "amountToPay",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "sendWinnerAmount",
-                            "type": "uint256"
-                        }
-                    ],
                     "indexed": false,
-                    "internalType": "struct Pyramid.Game",
-                    "name": "game",
-                    "type": "tuple"
+                    "internalType": "uint256",
+                    "name": "amountToPay",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "account",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "bool",
+                    "name": "success",
+                    "type": "bool"
+                }
+            ],
+            "name": "GamePaymentEvent",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amountToPay",
+                    "type": "uint256"
                 }
             ],
             "name": "NewGame",
@@ -95,37 +48,49 @@
             "anonymous": false,
             "inputs": [
                 {
-                    "components": [
-                        {
-                            "internalType": "uint256",
-                            "name": "circleCount",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "amountToPay",
-                            "type": "uint256"
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "sendWinnerAmount",
-                            "type": "uint256"
-                        }
-                    ],
                     "indexed": false,
-                    "internalType": "struct Pyramid.Game",
-                    "name": "game",
-                    "type": "tuple"
+                    "internalType": "uint256",
+                    "name": "amountToPay",
+                    "type": "uint256"
                 },
                 {
                     "indexed": false,
-                    "internalType": "address",
-                    "name": "winner",
-                    "type": "address"
+                    "internalType": "uint256",
+                    "name": "from",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "to",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
                 }
             ],
-            "name": "WinnerPayment",
+            "name": "ReferalPaymentEvent",
             "type": "event"
+        },
+        {
+            "stateMutability": "payable",
+            "type": "fallback"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountToPay",
+                    "type": "uint256"
+                }
+            ],
+            "name": "addGameLevel",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
         },
         {
             "inputs": [],
@@ -163,7 +128,7 @@
             "inputs": [
                 {
                     "internalType": "address",
-                    "name": "userAdsress",
+                    "name": "userAddress",
                     "type": "address"
                 }
             ],
@@ -201,6 +166,19 @@
             "inputs": [
                 {
                     "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
+                }
+            ],
+            "name": "joinToGame",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint8",
                     "name": "",
                     "type": "uint8"
                 }
@@ -209,21 +187,58 @@
             "outputs": [
                 {
                     "internalType": "uint256",
-                    "name": "circleCount",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
                     "name": "amountToPay",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "sendWinnerAmount",
                     "type": "uint256"
                 }
             ],
             "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "pools",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "userId",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address payable",
+                    "name": "userAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "invitedId",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "inviterId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "registerUserToGame",
+            "outputs": [],
+            "stateMutability": "payable",
             "type": "function"
         },
         {
@@ -238,17 +253,65 @@
             "outputs": [
                 {
                     "internalType": "uint256",
-                    "name": "UserId",
+                    "name": "userId",
                     "type": "uint256"
                 },
                 {
                     "internalType": "address payable",
-                    "name": "userAdsress",
+                    "name": "userAddress",
                     "type": "address"
                 },
                 {
                     "internalType": "uint256",
                     "name": "invitedId",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "name": "userGames",
+            "outputs": [
+                {
+                    "internalType": "bool",
+                    "name": "",
+                    "type": "bool"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint8",
+                    "name": "",
+                    "type": "uint8"
+                }
+            ],
+            "name": "userPayments",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
                     "type": "uint256"
                 }
             ],
@@ -273,6 +336,10 @@
             ],
             "stateMutability": "view",
             "type": "function"
+        },
+        {
+            "stateMutability": "payable",
+            "type": "receive"
         }
     ]
 }

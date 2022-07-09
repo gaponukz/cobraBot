@@ -19,10 +19,7 @@ contract Pyramid {
         uint256 invitedId;
     }
 
-    struct Game {
-        uint256 circleCount;
-        uint256 amountToPay;
-    }
+    struct Game { uint256 amountToPay; }
     
     mapping (uint8 => Game) public levels; // aviable games
     mapping (uint256 => address) public usersId; // key: user id, value: user address
@@ -32,9 +29,9 @@ contract Pyramid {
     mapping (address => mapping (uint8 => uint256)) public userPayments; // how mach user get payment from game
     mapping (address => mapping (uint8 => bool)) public userGames; // in what games user played
 
-    event NewGame(Game game); // new game event
-    event GamePaymentEvent(Game game, address account, bool success); // some get base game payment event
-    event ReferalPaymentEvent(Game game, uint256 from, uint256 to, uint amount); // some get ref payment event
+    event NewGame(uint256 amountToPay); // new game event
+    event GamePaymentEvent(uint256 amountToPay, address account, bool success); // some get base game payment event
+    event ReferalPaymentEvent(uint256 amountToPay, uint256 from, uint256 to, uint amount); // some get ref payment event
 
     modifier onlyRegistered {
         // access for registered users
@@ -64,7 +61,7 @@ contract Pyramid {
         registeredUsers[contractOwner] = User(0, payable(contractOwner), 0);
         currentUserIdIndex = 1;
 
-        addGameLevel({ circleCount: 3, amountToPay: 1 ether });
+        addGameLevel({ amountToPay: 1 ether });
     }
 
     receive () external payable {
@@ -96,6 +93,16 @@ contract Pyramid {
     }
 
     function culcNextWinnerIndex(uint256 index) internal pure returns(uint256) {
+        /**
+            * @dev Python code example to generate winner indexes: 
+            * def winner_generator(index: int) -> int:
+            *     next_index = culcNextWinnerIndex(index)
+            *     while (next_index != 0):
+            *         yield next_index
+            *         next_index = culcNextWinnerIndex(next_index)
+            *
+            * >>> winner_generator(31): 15, 7, 3, 1
+        */   
         return index % 2 == 0 ? 0 : index / 2;
     }
 
@@ -110,13 +117,13 @@ contract Pyramid {
         return userAddress.balance;
     }
 
-    function addGameLevel(uint256 circleCount, uint256 amountToPay) public onlyOwner {
+    function addGameLevel(uint256 amountToPay) public onlyOwner {
         /**
           * @dev This function add new game level (only contract owner access)
         */
-        levels[currentGameIdIndex] = Game({ circleCount: circleCount, amountToPay: amountToPay });
+        levels[currentGameIdIndex] = Game({ amountToPay: amountToPay });
         currentUserIndex[currentGameIdIndex] = 1;
-        emit NewGame(levels[currentGameIdIndex]);
+        emit NewGame(levels[currentGameIdIndex].amountToPay);
     }
 
     function registerUserToGame(uint256 inviterId) external payable noContractAccess {
@@ -151,14 +158,7 @@ contract Pyramid {
         if (currentUserIndex[gameId] >= 3) {
             uint256 userIndex = culcNextWinnerIndex(currentUserIndex[gameId]);
             /**
-                * @dev Using tree logic: after branche closing top user get payment. Python code example to generate winner indexes: 
-                * def winner_generator(index: int) -> int:
-                *     next_index = culcNextWinnerIndex(index)
-                *     while (next_index != 0):
-                *         yield next_index
-                *         next_index = _cucl(next_index)
-                *
-                * >>> winner_generator(31): 15, 7, 3, 1
+                * @dev Using tree logic: after branche closing top user get payment.
             */       
             while (userIndex != 0) {
                 address selectedAddress = pools[gameId][userIndex].userAddress;
@@ -172,7 +172,7 @@ contract Pyramid {
                     (bool success, ) = selectedAddress.call{value: levels[gameId].amountToPay * baseAward / 100}("");
                     userPayments[selectedAddress][gameId] += 1; // increase "how many payments get from game" value
 
-                    emit GamePaymentEvent(levels[gameId], selectedAddress, success);
+                    emit GamePaymentEvent(levels[gameId].amountToPay, selectedAddress, success);
 
                     uint256 userId = pools[gameId][userIndex].userId; // user (who get payment) id
                     uint256 invitedId = pools[gameId][userIndex].invitedId; // person (who invited this user) id
@@ -180,24 +180,24 @@ contract Pyramid {
 
                     (success, ) = usersId[invitedId].call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId], userId, invitedId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, invitedId, refValue);
 
                     refValue = levels[gameId].amountToPay * secondLevelReferal / 100; // second level referal
                     (success, ) = registeredUsers[usersId[invitedId]].userAddress.call{value: refValue}(""); // 2% ref (2 level)      
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId], invitedId, registeredUsers[usersId[invitedId]].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, invitedId, registeredUsers[usersId[invitedId]].userId, refValue);
 
                     refValue = levels[gameId].amountToPay * thirdLevelReferal / 100; // third level referal
                     (success, ) = registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userAddress.call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId], registeredUsers[usersId[invitedId]].userId, registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, registeredUsers[usersId[invitedId]].userId, registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userId, refValue);
                     /**
                       * @dev There contract owner get his 6% game award
                     */
                     refValue = levels[gameId].amountToPay * ownerReferal / 100; // owner referal
                     (success, ) = registeredUsers[contractOwner].userAddress.call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId], userId, registeredUsers[contractOwner].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, registeredUsers[contractOwner].userId, refValue);
 
                     userIndex = culcNextWinnerIndex(userIndex);
                 }

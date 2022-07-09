@@ -20,6 +20,11 @@ class UsersList(list):
         filter_users = [user for user in self if user['address'] == address]
 
         return filter_users[0] if filter_users else None
+
+    def find_user_by_refid(self, _id: str) -> dict | None:
+        filter_users = [user for user in self if int(user['ref_id']) == _id]
+
+        return filter_users[0] if filter_users else None
     
     def edit_user(self, user_id: int, **kwargs):
         user = self.find_user_by_id(user_id)

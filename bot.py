@@ -42,36 +42,37 @@ async def handle_event(event):
     event_args = json.loads(Web3.toJSON(event))
 
     if event_args['event'] == 'NewGame':
-        event_args = event_args['args']['game']
-        message = f"New game!\nCircle: {event_args[0]}\nPay: {event_args[1]} and get {event_args[2]}"
+        event_args = event_args['args']
+        message = f"New game!\nPay: {event_args['amountToPay']}"
 
         for user in signed_users:
             await bot.send_message(user['id'], message)
     
     elif event_args['event'] == 'GamePaymentEvent':
         event_args = event_args['args']
-        message = f"New winner!\n{event_args['account']} get {event_args['game'][-1] * 0.74}"
-        user = signed_users.find_user_by_address(event_args['winner'])
+        message = f"You get {Web3.fromWei(event_args['amountToPay'] * 0.74, 'ether')}!" \
+            if event_args['success'] else "You can not receive payments!"
+
+        user = signed_users.find_user_by_address(event_args['account'])
 
         if user:
             await bot.send_message(user['id'], message)
     
     elif event_args['event'] == 'ReferalPaymentEvent':
         event_args = event_args['args']
-        '''
-        message = f"Referal payment!\n{event_args['winner']} get {event_args['game'][-1]}"
-        user = signed_users.find_user_by_address(event_args['winner'])
+        user = signed_users.find_user_by_refid(event_args['to'])
+        message = f"You get {Web3.fromWei(event_args['amount'], 'ether')} referal payment from {event_args['from']}"
 
         if user:
             await bot.send_message(user['id'], message)
-        '''
 
 @dp.message_handler(commands="start")
 async def on_start_message_callback(message: types.Message):
-    find_user = signed_users.find_user_by_id(message.from_id)
+    print(message)
+    find_user = signed_users.find_user_by_id(message.from_user.id)
 
     if not find_user:
-        user = signed_users.get_default_user(message.from_id)
+        user = signed_users.get_default_user(message.from_user.id)
         signed_users.append(user)
     
     else:
@@ -81,19 +82,19 @@ async def on_start_message_callback(message: types.Message):
 
 @dp.message_handler(filters.Text(contains=['Set account'], ignore_case=True))
 async def on_set_account_message_callback(message: types.Message):
-    user = signed_users.find_user_by_id(message.from_id)
+    user = signed_users.find_user_by_id(message.from_user.id)
     await message.reply(languages[user['language']]["set_account"])
 
 @dp.message_handler(filters.Text(contains=['Set language'], ignore_case=True))
 async def on_set_language_message_callback(message: types.Message):
-    user = signed_users.find_user_by_id(message.from_id)
+    user = signed_users.find_user_by_id(message.from_user.id)
 
     languages_buttons = types.InlineKeyboardMarkup()\
         .add(types.InlineKeyboardButton('English', callback_data = "language en"))\
         .add(types.InlineKeyboardButton('Ukrainian', callback_data = "language ua"))\
 
     await bot.send_message(
-        message.from_id,
+        message.from_user.id,
         languages[user['language']]["select_language"],
         reply_markup = languages_buttons
     )
@@ -107,9 +108,9 @@ async def set_user_language_callback_button(callback_query: types.CallbackQuery)
 
 @dp.message_handler(filters.Regexp(r'^[0-9]+$'))
 async def on_set_account_refid_callback(message: types.Message):
-    user = signed_users.edit_user(message.from_id, ref_id=message.text)
+    user = signed_users.edit_user(message.from_user.id, ref_id=message.text)
     address = contract.functions.usersId(int(message.text)).call()
-    user = signed_users.edit_user(message.from_id, address=address)
+    user = signed_users.edit_user(message.from_user.id, address=address)
 
     await message.reply(languages[user['language']]["successfully_set_account"])
 
@@ -121,5 +122,5 @@ if __name__ == "__main__":
         contract.events.ReferalPaymentEvent.createFilter(fromBlock='latest')
     ]
 
-    loop.create_task(log_loop(event_filters, 2))
+    loop.create_task(log_loop(event_filters, 1))
     executor.start_polling(dp, skip_updates=True)

@@ -14,22 +14,10 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "circleCount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "amountToPay",
-								"type": "uint256"
-							}
-						],
 						"indexed": false,
-						"internalType": "struct Pyramid.Game",
-						"name": "game",
-						"type": "tuple"
+						"internalType": "uint256",
+						"name": "amountToPay",
+						"type": "uint256"
 					},
 					{
 						"indexed": false,
@@ -51,22 +39,10 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "circleCount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "amountToPay",
-								"type": "uint256"
-							}
-						],
 						"indexed": false,
-						"internalType": "struct Pyramid.Game",
-						"name": "game",
-						"type": "tuple"
+						"internalType": "uint256",
+						"name": "amountToPay",
+						"type": "uint256"
 					}
 				],
 				"name": "NewGame",
@@ -76,22 +52,10 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "circleCount",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "amountToPay",
-								"type": "uint256"
-							}
-						],
 						"indexed": false,
-						"internalType": "struct Pyramid.Game",
-						"name": "game",
-						"type": "tuple"
+						"internalType": "uint256",
+						"name": "amountToPay",
+						"type": "uint256"
 					},
 					{
 						"indexed": false,
@@ -121,11 +85,6 @@
 			},
 			{
 				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "circleCount",
-						"type": "uint256"
-					},
 					{
 						"internalType": "uint256",
 						"name": "amountToPay",
@@ -230,11 +189,6 @@
 				],
 				"name": "levels",
 				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "circleCount",
-						"type": "uint256"
-					},
 					{
 						"internalType": "uint256",
 						"name": "amountToPay",
@@ -420,11 +374,11 @@
 	},
 	"sources": {
 		"cobraBot/Contract.sol": {
-			"keccak256": "0xcb238f9fcce53cf7a90e10cd255b7c56cf45cb0d875c2b76519d535b0c865d36",
+			"keccak256": "0xa9bbdf5ad95dfd06d012f1a65b8d488bb2318376952ba4b7d4fd7a8f250f91cd",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://004ce5b57f0e39247594edb3852a6f81f75c207ed227ee1ddf0f3fe526ce8272",
-				"dweb:/ipfs/QmVDFDRscs4KMJGf7cdPNcFyKNfUvA8BQvagydBnkryTSV"
+				"bzz-raw://6fe920308a48c6c6fee467201f1d143f9d333f8ad538066e3e5cdf609216dd64",
+				"dweb:/ipfs/QmbYgKremkfKKGMURfPCLzxKrWuD2UgjACFDM8EukfQbrg"
 			]
 		}
 	},
