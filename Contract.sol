@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0.0;
+pragma solidity ^0.8.0;
 
 contract Pyramid {
-    uint256 currentUserIdIndex; // how many users registered
+    uint256 public currentUserIdIndex; // how many users registered
     uint8 public currentGameIdIndex; // how many games aviable
     address contractOwner;
 
@@ -123,6 +123,7 @@ contract Pyramid {
         */
         levels[currentGameIdIndex] = Game({ amountToPay: amountToPay });
         currentUserIndex[currentGameIdIndex] = 1;
+        currentGameIdIndex += 1;
         emit NewGame(levels[currentGameIdIndex].amountToPay);
     }
 
@@ -130,6 +131,7 @@ contract Pyramid {
         /**
           * @dev This function register user in game
         */
+        require(registeredUsers[msg.sender].userAddress == address(0), "You are already registered");
         require (msg.value == 1 ether, "For regiter in game you need pay 1 ether");
 
         registeredUsers[msg.sender] = User(currentUserIdIndex, payable(msg.sender), inviterId);
