@@ -20,7 +20,9 @@ contract Pyramid {
     }
 
     struct Game { uint256 amountToPay; }
-    
+    /*
+        * @note First registered user is owner, so registeredUsers starts from 1
+    */
     mapping (uint8 => Game) public levels; // aviable games
     mapping (uint256 => address) public usersId; // key: user id, value: user address
     mapping (address => User) public registeredUsers; // key user address, value: user(id, invitedId)
@@ -34,13 +36,17 @@ contract Pyramid {
     event ReferalPaymentEvent(uint256 amountToPay, uint256 from, uint256 to, uint amount); // some get ref payment event
 
     modifier onlyRegistered {
-        // access for registered users
+        /**
+          * @dev Access for registered users
+        */
         require(registeredUsers[msg.sender].userAddress != address(0));
         _;
     }
 
     modifier noContractAccess {
-        // no access for contracts
+        /**
+          * @dev No access for contracts
+        */
         uint32 size;
         address sender = msg.sender;
         assembly { size := extcodesize(sender) }
@@ -50,7 +56,9 @@ contract Pyramid {
     }
 
     modifier onlyOwner {
-        // access for owner
+        /**
+          * @dev Access for owner
+        */
         require(hasAccess(msg.sender));
         _;
     }
@@ -122,7 +130,6 @@ contract Pyramid {
           * @dev This function add new game level (only contract owner access)
         */
         levels[currentGameIdIndex] = Game({ amountToPay: amountToPay });
-        currentUserIndex[currentGameIdIndex] = 1;
         currentGameIdIndex += 1;
         emit NewGame(levels[currentGameIdIndex].amountToPay);
     }
@@ -153,6 +160,7 @@ contract Pyramid {
         */
         pools[gameId][currentUserIndex[gameId]] = registeredUsers[sender];
         userGames[sender][gameId] = true;
+        currentUserIndex[gameId] += 1;
         /**
           * @dev If game progress more them game period start game logic
         */
@@ -163,7 +171,7 @@ contract Pyramid {
                 * @dev Using tree logic: after branche closing top user get payment.
             */       
             while (userIndex != 0) {
-                address selectedAddress = pools[gameId][userIndex].userAddress;
+                address selectedAddress = pools[gameId][userIndex - 1].userAddress;
                 /**
                   * @dev User get payment if he alredy got payment for 2 times or bought next level
                 */
@@ -176,8 +184,8 @@ contract Pyramid {
 
                     emit GamePaymentEvent(levels[gameId].amountToPay, selectedAddress, success);
 
-                    uint256 userId = pools[gameId][userIndex].userId; // user (who get payment) id
-                    uint256 invitedId = pools[gameId][userIndex].invitedId; // person (who invited this user) id
+                    uint256 userId = pools[gameId][userIndex - 1].userId; // user (who get payment) id
+                    uint256 invitedId = pools[gameId][userIndex - 1].invitedId; // person (who invited this user) id
                     uint refValue = levels[gameId].amountToPay * firstLevelReferal / 100; // first level referal
 
                     (success, ) = usersId[invitedId].call{value: refValue}("");
@@ -205,9 +213,5 @@ contract Pyramid {
                 }
             }
         }
-        /**
-          * @dev Increase game procces index
-        */
-        currentUserIndex[gameId] += 1;
     }
 }

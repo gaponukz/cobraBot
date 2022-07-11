@@ -34,15 +34,19 @@ describe("Pyramid contract", () => {
             */   
             assert.equal(await pyramid.currentUserIdIndex(), 1)
 
-            await pyramid.registerUserToGame(0, {from: accounts[1], value: web3.utils.toWei('1', 'ether')}) // afer adding new user
+            await pyramid.registerUserToGame(0, {from: accounts[19], value: web3.utils.toWei('1', 'ether')}) // afer adding new user
             assert.equal(await pyramid.currentUserIdIndex(), 2) // we should have 2 users
         })
 
         it("Should work without bugs", async () => {
             const pyramid = await Pyramid.new()
-            const accountsNumber = 15
+            /**
+             * @note We will test game 1 with accountsNumber accounts
+             * all users will register in game and join to game 1 (except owner, he already registered)
+            */      
+            const accountsNumber = 14
 
-            pyramid.joinToGame(0, {from: accounts[0], value: web3.utils.toWei('1', 'ether')})
+            pyramid.joinToGame(0, {from: accounts[0], value: web3.utils.toWei('1', 'ether')}) // owner join to game
 
             for (let index = 1; index < accountsNumber; index++) {
                 let account = accounts[index]
@@ -50,10 +54,14 @@ describe("Pyramid contract", () => {
                 await pyramid.registerUserToGame(0, {from: account, value: web3.utils.toWei('1', 'ether')})
                 await pyramid.joinToGame(0, {from: account, value: web3.utils.toWei('1', 'ether')})
             }
-
+            /**
+             * @note Check if all accounts in game
+            */   
             assert.equal(await pyramid.currentUserIdIndex(), accountsNumber)
-            assert.equal(await pyramid.currentUserIndex(0), accountsNumber + 1)
-
+            assert.equal(await pyramid.currentUserIndex(0), accountsNumber)
+            /**
+             * @note Display accounts balances, check if logic is right
+            */   
             for (let index = 0; index < accountsNumber; index++) {
                 console.log(index+1, web3.utils.fromWei(await web3.eth.getBalance(accounts[index])))
             }
