@@ -221,9 +221,8 @@ contract Pyramid {
                     balances[contractOwner] += refValue;
 
                     emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, registeredUsers[contractOwner].userId, refValue);
-
-                    userIndex = culcNextWinnerIndex(userIndex);
                 }
+                userIndex = culcNextWinnerIndex(userIndex);
             }
         }
     }

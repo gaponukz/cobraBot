@@ -100,7 +100,7 @@ contract Pyramid {
         _joinToGame(gameId, sender, value);
     }
 
-    function culcNextWinnerIndex(uint256 index) internal pure returns(uint256) {
+    function culcNextWinnerIndex(uint256 index) public pure returns(uint256) {
         /**
             * @dev Python code example to generate winner indexes: 
             * def winner_generator(index: int) -> int:
@@ -208,9 +208,8 @@ contract Pyramid {
                     (success, ) = registeredUsers[contractOwner].userAddress.call{value: refValue}("");
 
                     if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, registeredUsers[contractOwner].userId, refValue);
-
-                    userIndex = culcNextWinnerIndex(userIndex);
                 }
+                userIndex = culcNextWinnerIndex(userIndex);
             }
         }
     }

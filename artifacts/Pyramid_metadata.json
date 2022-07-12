@@ -97,6 +97,25 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					}
+				],
+				"name": "culcNextWinnerIndex",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "currentGameIdIndex",
 				"outputs": [
@@ -149,7 +168,7 @@
 						"type": "address"
 					}
 				],
-				"name": "geUserGameBalance",
+				"name": "getUserBalance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -355,13 +374,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "withdrawGameBalance",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
 				"stateMutability": "payable",
 				"type": "receive"
 			}
@@ -379,7 +391,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Contract2v.sol": "Pyramid"
+			"Contract.sol": "Pyramid"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -393,12 +405,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Contract2v.sol": {
-			"keccak256": "0x41f5102639b4f1e089f1ade82a0a64225997a073328ff090e0f8caf6016be06d",
+		"Contract.sol": {
+			"keccak256": "0x027b8b5a02b04fb398e375dd6ce36e9d3a32058591cd87c3752d87e4650f0b3e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://78a5c70439faead63b907658bbf50d2a2dd552ce1897ecefffb4b91d449cbbf8",
-				"dweb:/ipfs/QmSNTQTfSCwG4q5crb4JgXwaBcactEd3yjhJxSmKNfnkW3"
+				"bzz-raw://4a0235e8262df310f114a47fb599d670334be705c898385563b2912b96d12d7f",
+				"dweb:/ipfs/QmS3DkVhPG7p6SZGmtKUtD7FMc7t4LXf7hRRogiZBHhrR5"
 			]
 		}
 	},
