@@ -15,9 +15,9 @@
 				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "uint256",
-						"name": "amountToPay",
-						"type": "uint256"
+						"internalType": "uint8",
+						"name": "gameId",
+						"type": "uint8"
 					},
 					{
 						"indexed": false,
@@ -40,8 +40,14 @@
 				"inputs": [
 					{
 						"indexed": false,
+						"internalType": "uint8",
+						"name": "gameId",
+						"type": "uint8"
+					},
+					{
+						"indexed": false,
 						"internalType": "uint256",
-						"name": "amountToPay",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
@@ -54,8 +60,27 @@
 					{
 						"indexed": false,
 						"internalType": "uint256",
-						"name": "amountToPay",
+						"name": "userId",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "inviterId",
+						"type": "uint256"
+					}
+				],
+				"name": "NewUserRegisteredEvent",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint8",
+						"name": "gameId",
+						"type": "uint8"
 					},
 					{
 						"indexed": false,
@@ -221,6 +246,11 @@
 				],
 				"name": "levels",
 				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "gameId",
+						"type": "uint8"
+					},
 					{
 						"internalType": "uint256",
 						"name": "amountToPay",
@@ -406,11 +436,11 @@
 	},
 	"sources": {
 		"Contract.sol": {
-			"keccak256": "0x027b8b5a02b04fb398e375dd6ce36e9d3a32058591cd87c3752d87e4650f0b3e",
+			"keccak256": "0x2d4a6dce248ff66fe64a1686cca96421a7c6b9a9d175c5f0e25b6c26f7f478bb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4a0235e8262df310f114a47fb599d670334be705c898385563b2912b96d12d7f",
-				"dweb:/ipfs/QmS3DkVhPG7p6SZGmtKUtD7FMc7t4LXf7hRRogiZBHhrR5"
+				"bzz-raw://c1e696a9581ee201310f9b8739283daf952820197b1be1e9443ea7d59ad72140",
+				"dweb:/ipfs/Qmc7D9Cek5iCXpNZB4xW8tDbeRTKFgCzs5F3YUtmZtMP4y"
 			]
 		}
 	},

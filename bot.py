@@ -43,27 +43,46 @@ async def handle_event(event):
 
     if event_args['event'] == 'NewGame':
         event_args = event_args['args']
-        message = f"New game!\nPay: {event_args['amountToPay']}"
+        message = f"New game!\nPrice: {Web3.fromWei(event_args['amount'], 'ether')}\nID: {event_args['gameId']+1}"
 
         for user in signed_users:
             await bot.send_message(user['id'], message)
     
     elif event_args['event'] == 'GamePaymentEvent':
         event_args = event_args['args']
-        message = f"You get {Web3.fromWei(event_args['amountToPay'] * 0.74, 'ether')}!" \
-            if event_args['success'] else "You can not receive payments!"
-
         user = signed_users.find_user_by_address(event_args['account'])
 
         if user:
+            message = languages[user['language']]["new_payment"].format(
+                event_args['gameId']+1,
+                user['ref_id']
+            )
+
             await bot.send_message(user['id'], message)
     
     elif event_args['event'] == 'ReferalPaymentEvent':
         event_args = event_args['args']
         user = signed_users.find_user_by_refid(event_args['to'])
-        message = f"You get {Web3.fromWei(event_args['amount'], 'ether')} referal payment from {event_args['from']}"
+        message = languages[user['language']]["new_referaf_payment"].format(
+            Web3.fromWei(event_args['amount'], 'ether'),
+            event_args['to'],
+            event_args['gameId'],
+            event_args['from']
+        )
 
         if user:
+            await bot.send_message(user['id'], message)
+
+    elif event_args['event'] == 'NewUserRegisteredEvent':
+        event_args = event_args['args']
+        user = signed_users.find_user_by_refid(event_args['inviterId'])
+
+        if user:
+            message = languages[user['language']]["new_referal_user"].format(
+                event_args['userId'],
+                1 # TODO: make this statistics from smart contract and replace with "1"
+            )
+
             await bot.send_message(user['id'], message)
 
 @dp.message_handler(commands="start")
@@ -119,7 +138,8 @@ if __name__ == "__main__":
     event_filters = [
         contract.events.NewGame.createFilter(fromBlock='latest'),
         contract.events.GamePaymentEvent.createFilter(fromBlock='latest'),
-        contract.events.ReferalPaymentEvent.createFilter(fromBlock='latest')
+        contract.events.ReferalPaymentEvent.createFilter(fromBlock='latest'),
+        contract.events.NewUserRegisteredEvent.createFilter(fromBlock='latest')
     ]
 
     loop.create_task(log_loop(event_filters, 1))

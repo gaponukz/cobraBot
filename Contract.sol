@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: MIT
 
+/*
+    * @todo SafeMath
+*/
+
 pragma solidity ^0.8.0;
 
 contract Pyramid {
@@ -19,7 +23,7 @@ contract Pyramid {
         uint256 invitedId;
     }
 
-    struct Game { uint256 amountToPay; }
+    struct Game { uint8 gameId; uint256 amountToPay; }
     /*
         * @note First registered user is owner, so registeredUsers starts from 1
     */
@@ -31,9 +35,10 @@ contract Pyramid {
     mapping (address => mapping (uint8 => uint256)) public userPayments; // how mach user get payment from game
     mapping (address => mapping (uint8 => bool)) public userGames; // in what games user played
 
-    event NewGame(uint256 amountToPay); // new game event
-    event GamePaymentEvent(uint256 amountToPay, address account, bool success); // some get base game payment event
-    event ReferalPaymentEvent(uint256 amountToPay, uint256 from, uint256 to, uint amount); // some get ref payment event
+    event NewGame(uint8 gameId, uint256 amount); // new game event
+    event GamePaymentEvent(uint8 gameId, address account, bool success); // someone get base game payment event
+    event ReferalPaymentEvent(uint8 gameId, uint256 from, uint256 to, uint amount); // someone get ref payment event
+    event NewUserRegisteredEvent(uint256 userId, uint256 inviterId); // new user registered by referal
 
     modifier onlyRegistered {
         /**
@@ -129,9 +134,9 @@ contract Pyramid {
         /**
           * @dev This function add new game level (only contract owner access)
         */
-        levels[currentGameIdIndex] = Game({ amountToPay: amountToPay });
+        levels[currentGameIdIndex] = Game({ gameId: currentGameIdIndex, amountToPay: amountToPay });
         currentGameIdIndex += 1;
-        emit NewGame(levels[currentGameIdIndex].amountToPay);
+        emit NewGame( currentGameIdIndex-1, amountToPay );
     }
 
     function registerUserToGame(uint256 inviterId) external payable noContractAccess {
@@ -144,6 +149,8 @@ contract Pyramid {
         registeredUsers[msg.sender] = User(currentUserIdIndex, payable(msg.sender), inviterId);
         usersId[currentUserIdIndex] = msg.sender;
         currentUserIdIndex += 1;
+
+        emit NewUserRegisteredEvent(currentUserIdIndex - 1, inviterId);
     }
 
     function joinToGame(uint8 gameId) public payable onlyRegistered {
@@ -182,7 +189,7 @@ contract Pyramid {
                     (bool success, ) = selectedAddress.call{value: levels[gameId].amountToPay * baseAward / 100}("");
                     userPayments[selectedAddress][gameId] += 1; // increase "how many payments get from game" value
 
-                    emit GamePaymentEvent(levels[gameId].amountToPay, selectedAddress, success);
+                    emit GamePaymentEvent(levels[gameId].gameId, selectedAddress, success);
 
                     uint256 userId = pools[gameId][userIndex - 1].userId; // user (who get payment) id
                     uint256 invitedId = pools[gameId][userIndex - 1].invitedId; // person (who invited this user) id
@@ -190,24 +197,24 @@ contract Pyramid {
 
                     (success, ) = usersId[invitedId].call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, invitedId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].gameId, userId, invitedId, refValue);
 
                     refValue = levels[gameId].amountToPay * secondLevelReferal / 100; // second level referal
                     (success, ) = registeredUsers[usersId[invitedId]].userAddress.call{value: refValue}(""); // 2% ref (2 level)      
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, invitedId, registeredUsers[usersId[invitedId]].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].gameId, invitedId, registeredUsers[usersId[invitedId]].userId, refValue);
 
                     refValue = levels[gameId].amountToPay * thirdLevelReferal / 100; // third level referal
                     (success, ) = registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userAddress.call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, registeredUsers[usersId[invitedId]].userId, registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].gameId, registeredUsers[usersId[invitedId]].userId, registeredUsers[usersId[registeredUsers[usersId[invitedId]].userId]].userId, refValue);
                     /**
                       * @dev There contract owner get his 6% game award
                     */
                     refValue = levels[gameId].amountToPay * ownerReferal / 100; // owner referal
                     (success, ) = registeredUsers[contractOwner].userAddress.call{value: refValue}("");
 
-                    if (success) emit ReferalPaymentEvent(levels[gameId].amountToPay, userId, registeredUsers[contractOwner].userId, refValue);
+                    if (success) emit ReferalPaymentEvent(levels[gameId].gameId, userId, registeredUsers[contractOwner].userId, refValue);
                 }
                 userIndex = culcNextWinnerIndex(userIndex);
             }

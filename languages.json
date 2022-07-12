@@ -4,7 +4,10 @@
         "set_account": "✏️ Specify the ID of your account in order to instantly receive related event notifications.",
         "successfully_set_account": "Account added successfully 👌",
         "select_language": "🌍 Select a language:",
-        "successfully_set_language": "✅ The language was changed successfully"
+        "successfully_set_language": "✅ The language was changed successfully",
+        "new_payment": "⬆️  Payment was sent to your upline\nPlatform: {0}\nID {1}  🗯️  Congrats! Let's move on",
+        "new_referaf_payment": "➕ {0} BNB | ID {1}\nPlatform: {2}\nFrom: ID {3}\n🎯 Congratulations!",
+        "new_referal_user": "⬆️ New partner joined!\n\n🆔 {0} has joined your team! You now have {1} partners."
     },
     "ua": {}
 }

@@ -1,6 +1,32 @@
 {
-    "address": "0x38ebF29e410935B8bD0F0A1e3B65218aF09CFDdB",
+    "address": "0x65f2649E3Cd0f18766E880A614043Ebe1FE1d0B9",
     "abi": [
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "amountToPay",
+                    "type": "uint256"
+                }
+            ],
+            "name": "addGameLevel",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
+                }
+            ],
+            "name": "joinToGame",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
         {
             "inputs": [],
             "stateMutability": "nonpayable",
@@ -11,9 +37,9 @@
             "inputs": [
                 {
                     "indexed": false,
-                    "internalType": "uint256",
-                    "name": "amountToPay",
-                    "type": "uint256"
+                    "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
                 },
                 {
                     "indexed": false,
@@ -36,8 +62,14 @@
             "inputs": [
                 {
                     "indexed": false,
+                    "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
+                },
+                {
+                    "indexed": false,
                     "internalType": "uint256",
-                    "name": "amountToPay",
+                    "name": "amount",
                     "type": "uint256"
                 }
             ],
@@ -50,8 +82,27 @@
                 {
                     "indexed": false,
                     "internalType": "uint256",
-                    "name": "amountToPay",
+                    "name": "userId",
                     "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "inviterId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "NewUserRegisteredEvent",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
                 },
                 {
                     "indexed": false,
@@ -76,20 +127,43 @@
             "type": "event"
         },
         {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "inviterId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "registerUserToGame",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
             "stateMutability": "payable",
             "type": "fallback"
+        },
+        {
+            "stateMutability": "payable",
+            "type": "receive"
         },
         {
             "inputs": [
                 {
                     "internalType": "uint256",
-                    "name": "amountToPay",
+                    "name": "index",
                     "type": "uint256"
                 }
             ],
-            "name": "addGameLevel",
-            "outputs": [],
-            "stateMutability": "nonpayable",
+            "name": "culcNextWinnerIndex",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "pure",
             "type": "function"
         },
         {
@@ -100,6 +174,19 @@
                     "internalType": "uint8",
                     "name": "",
                     "type": "uint8"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "currentUserIdIndex",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
                 }
             ],
             "stateMutability": "view",
@@ -166,25 +253,17 @@
             "inputs": [
                 {
                     "internalType": "uint8",
-                    "name": "gameId",
-                    "type": "uint8"
-                }
-            ],
-            "name": "joinToGame",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint8",
                     "name": "",
                     "type": "uint8"
                 }
             ],
             "name": "levels",
             "outputs": [
+                {
+                    "internalType": "uint8",
+                    "name": "gameId",
+                    "type": "uint8"
+                },
                 {
                     "internalType": "uint256",
                     "name": "amountToPay",
@@ -226,19 +305,6 @@
                 }
             ],
             "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "inviterId",
-                    "type": "uint256"
-                }
-            ],
-            "name": "registerUserToGame",
-            "outputs": [],
-            "stateMutability": "payable",
             "type": "function"
         },
         {
@@ -336,10 +402,6 @@
             ],
             "stateMutability": "view",
             "type": "function"
-        },
-        {
-            "stateMutability": "payable",
-            "type": "receive"
         }
     ]
 }
