@@ -122,10 +122,6 @@ contract Pyramid {
         return userAdress == contractOwner;
     }
 
-    function getUserBalance(address userAddress) public view returns(uint256) {
-        return userAddress.balance;
-    }
-
     function geUserGameBalance(address userAddress) public view returns(uint256) {
         return balances[userAddress];
     }
@@ -139,7 +135,7 @@ contract Pyramid {
         emit NewGame(levels[currentGameIdIndex].amountToPay);
     }
 
-    function withdrawGameBalance() public onlyRegistered {
+    function withdrawGameBalance() external onlyRegistered {
         /**
           * @dev This function withdraw user game balance (all amount)
           * @todo Add amount to withdraw (if we need that)
@@ -153,6 +149,7 @@ contract Pyramid {
     function registerUserToGame(uint256 inviterId) external payable noContractAccess {
         /**
           * @dev This function register user in game
+          * @note Edit register amount to pay
         */
         require(registeredUsers[msg.sender].userAddress == address(0), "You are already registered");
         require (msg.value == 1 ether, "For regiter in game you need pay 1 ether");
