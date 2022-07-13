@@ -1,6 +1,7 @@
 import os
 import json
 import asyncio
+
 from db import UsersList
 
 from web3 import Web3
@@ -108,9 +109,19 @@ async def on_set_account_message_callback(message: types.Message):
 async def on_set_language_message_callback(message: types.Message):
     user = signed_users.find_user_by_id(message.from_user.id)
 
-    languages_buttons = types.InlineKeyboardMarkup()\
-        .add(types.InlineKeyboardButton('English', callback_data = "language en"))\
-        .add(types.InlineKeyboardButton('Ukrainian', callback_data = "language ua"))\
+    languages_buttons = types.InlineKeyboardMarkup(row_width=3)
+    en_button = types.InlineKeyboardButton('🇬🇧 ENGLISH', callback_data = "language en")
+    ru_button = types.InlineKeyboardButton('🇷🇺 РУССКИЙ', callback_data = "language ru")
+    fr_button = types.InlineKeyboardButton('🇫🇷 FRENCH', callback_data = "language fr")
+    pt_button = types.InlineKeyboardButton('🇵🇹 PORTUGAL', callback_data = "language pt")
+    de_button = types.InlineKeyboardButton('🇩🇪 GERMAN', callback_data = "language de")
+    some_button = types.InlineKeyboardButton('some', callback_data = "foo")
+
+    languages_buttons.row(en_button, fr_button)
+
+    languages_buttons.row(ru_button, pt_button)
+
+    languages_buttons.row(de_button, some_button)
 
     await bot.send_message(
         message.from_user.id,
