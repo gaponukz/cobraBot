@@ -81,14 +81,13 @@ async def handle_event(event):
         if user:
             message = languages[user['language']]["new_referal_user"].format(
                 event_args['userId'],
-                1 # TODO: make this statistics from smart contract and replace with "1"
+                event_args['partnersCount']
             )
 
             await bot.send_message(user['id'], message)
 
 @dp.message_handler(commands="start")
 async def on_start_message_callback(message: types.Message):
-    print(message)
     find_user = signed_users.find_user_by_id(message.from_user.id)
 
     if not find_user:
