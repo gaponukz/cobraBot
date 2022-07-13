@@ -274,7 +274,7 @@ contract Pyramid {
         /**
           * @dev Access for owner
         */
-        require(hasAccess(msg.sender));
+        require(hasAccess(msg.sender), "You are not owner");
         _;
     }
 
