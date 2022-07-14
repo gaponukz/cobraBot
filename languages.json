@@ -15,16 +15,16 @@
         "successfully_set_account": "Аккаунт успешно добавлен 👌",
         "select_language": "🌍 Выберите язык:",
         "successfully_set_language": "✅ Язык интерфейса успешно изменен",
-        "new_payment": "",
-        "new_referaf_payment": "",
-        "new_referal_user": ""
+        "new_payment": "⬆️  Платеж получен вашим вышестоящим партнером\nПлатформа: {0}\nID {1}  🗯️  Поздравляем! Двигаемся дальше",
+        "new_referaf_payment": "➕ {0}  BNB | ID {1}\nПлатформа: {2}\nОт участника: ID {3}\n🎯 Поздравляем!",
+        "new_referal_user": "⬆️ У Вас новый партнер!\n\n🆔 {0} присоединился к вашей команде. У Вас уже {1} партнера."
     },
     "fr": {
-        "greating": "",
-        "set_account": "",
-        "successfully_set_account": "",
-        "select_language": "",
-        "successfully_set_language": "",
+        "greating": "Salut! Je suis le bot. Et si on devenait amis ? On m’a créé pour éviter que tu rates des événements importants sur ton compte du Forsage, et faire en sorte de gagner encore plus grâce à moi!",
+        "set_account": "✏️ Indiquez le votre compte du projet Cobra pour recevoir instantanément les notifications d’événements.",
+        "successfully_set_account": "Le compte a bien été ajouté 👌",
+        "select_language": "🌍 Choisissez votre langue :",
+        "successfully_set_language": "✅ La langue de l’interface a bien été modifiée",
         "new_payment": "",
         "new_referaf_payment": "",
         "new_referal_user": ""
