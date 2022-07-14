@@ -29,27 +29,27 @@
         "new_referaf_payment": "➕{0} BNB | ID {1}\nPlace : {2}\nBekommen von: ID {3}\n🎯 Félicitations! ",
         "new_referal_user": "⬆️ Nouveau partenaire rejoint!\n\n🆔 {0} a rejoint votre équipe ! Vous avez maintenant {1} partenaires."
     },
-    "pt": {
-        "greating": "",
-        "set_account": "",
-        "successfully_set_account": "",
-        "select_language": "",
-        "successfully_set_language": "",
-        "new_payment": "",
-        "new_referaf_payment": "",
-        "new_referal_user": ""
-    },
     "de": {
         "greating": "",
-        "set_account": "",
-        "successfully_set_account": "",
-        "select_language": "",
-        "successfully_set_language": "",
+        "set_account": "✏️ Geben Sie die Ihres Kontos in der Kobra an, um sofort Benachrichtigungen über Ereignisse zu erhalten.",
+        "successfully_set_account": "✅ Die Sprache der Benutzeroberfläche wurde erfolgreich geändert",
+        "select_language": "🌍 Choisissez votre langue :",
+        "successfully_set_language": "✅ Die Sprache der Benutzeroberfläche wurde erfolgreich geändert",
+        "new_payment": "⬆️  Erhalten: Zahlung upline\nSeite: {0}\nID {1}  🗯️  Gratulieren! Gehen wir weiter",
+        "new_referaf_payment": "➕ {0} BNB | ID {1}\nSeite : {2}\nBekommen von: ID {3}\n🎯 Gratulieren! ",
+        "new_referal_user": "⬆️ Neuer Partner dazugekommen!\n🆔 undefined hat sich deinem Team angeschlossen! Sie haben jetzt undefined Partner."
+    },
+    "es": {
+        "greating": "Hola a este bot. No te pierdas eventos administrar cuentas!",
+        "set_account": "✏️ Especifique el de su cuenta Cobra project para recibir instantáneamente notificaciones de eventos relacionados.",
+        "successfully_set_account": "Address added successfully 👌",
+        "select_language": "🌍 Seleccione un idioma:",
+        "successfully_set_language": "✅ El idioma se cambió con éxito",
         "new_payment": "",
         "new_referaf_payment": "",
         "new_referal_user": ""
     },
-    "es": {
+    "pt": {
         "greating": "",
         "set_account": "",
         "successfully_set_account": "",
