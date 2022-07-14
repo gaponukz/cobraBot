@@ -25,9 +25,9 @@
         "successfully_set_account": "Le compte a bien été ajouté 👌",
         "select_language": "🌍 Choisissez votre langue :",
         "successfully_set_language": "✅ La langue de l’interface a bien été modifiée",
-        "new_payment": "",
-        "new_referaf_payment": "",
-        "new_referal_user": ""
+        "new_payment": "⬆️  Reçu : paiement en ligne\nPlace : {0}\nID {1}  🗯️  Félicitations! Poursuivons",
+        "new_referaf_payment": "➕{0} BNB | ID {1}\nPlace : {2}\nBekommen von: ID {3}\n🎯 Félicitations! ",
+        "new_referal_user": "⬆️ Nouveau partenaire rejoint!\n\n🆔 {0} a rejoint votre équipe ! Vous avez maintenant {1} partenaires."
     },
     "pt": {
         "greating": "",
