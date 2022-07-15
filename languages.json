@@ -1,6 +1,6 @@
 {
     "en": {
-        "greating": "Hi! I'm a bot. Want to make friends? I was created so that you don't miss any important events in your Forsage account and can make even more money with me!",
+        "greating": "Hi! I'm a bot. Want to make friends? I was created so that you don't miss any important events in your Cobra account and can make even more money with me!",
         "set_account": "✏️ Specify the ID of your account in order to instantly receive related event notifications.",
         "successfully_set_account": "Account added successfully 👌",
         "select_language": "🌍 Select a language:",
@@ -20,7 +20,7 @@
         "new_referal_user": "⬆️ У Вас новый партнер!\n\n🆔 {0} присоединился к вашей команде. У Вас уже {1} партнера."
     },
     "fr": {
-        "greating": "Salut! Je suis le bot. Et si on devenait amis ? On m’a créé pour éviter que tu rates des événements importants sur ton compte du Forsage, et faire en sorte de gagner encore plus grâce à moi!",
+        "greating": "Salut! Je suis le bot. Et si on devenait amis ? On m’a créé pour éviter que tu rates des événements importants sur ton compte du Cobra, et faire en sorte de gagner encore plus grâce à moi!",
         "set_account": "✏️ Indiquez le votre compte du projet Cobra pour recevoir instantanément les notifications d’événements.",
         "successfully_set_account": "Le compte a bien été ajouté 👌",
         "select_language": "🌍 Choisissez votre langue :",
@@ -30,14 +30,14 @@
         "new_referal_user": "⬆️ Nouveau partenaire rejoint!\n\n🆔 {0} a rejoint votre équipe ! Vous avez maintenant {1} partenaires."
     },
     "de": {
-        "greating": "",
+        "greating": "Hallo! Ich bin ein bot, lass uns Freunde sein!? Ich wurde erstellt, damit du wichtige Ereignisse in deinem Cobra nicht verpasst und mit mir noch mehr verdienen kannst!",
         "set_account": "✏️ Geben Sie die Ihres Kontos in der Kobra an, um sofort Benachrichtigungen über Ereignisse zu erhalten.",
         "successfully_set_account": "✅ Die Sprache der Benutzeroberfläche wurde erfolgreich geändert",
         "select_language": "🌍 Choisissez votre langue :",
         "successfully_set_language": "✅ Die Sprache der Benutzeroberfläche wurde erfolgreich geändert",
         "new_payment": "⬆️  Erhalten: Zahlung upline\nSeite: {0}\nID {1}  🗯️  Gratulieren! Gehen wir weiter",
         "new_referaf_payment": "➕ {0} BNB | ID {1}\nSeite : {2}\nBekommen von: ID {3}\n🎯 Gratulieren! ",
-        "new_referal_user": "⬆️ Neuer Partner dazugekommen!\n🆔 undefined hat sich deinem Team angeschlossen! Sie haben jetzt undefined Partner."
+        "new_referal_user": "⬆️ Neuer Partner dazugekommen!\n\n🆔 {0} hat sich deinem Team angeschlossen! Sie haben jetzt {1} Partner."
     },
     "es": {
         "greating": "Hola a este bot. No te pierdas eventos administrar cuentas!",
@@ -45,16 +45,16 @@
         "successfully_set_account": "Address added successfully 👌",
         "select_language": "🌍 Seleccione un idioma:",
         "successfully_set_language": "✅ El idioma se cambió con éxito",
-        "new_payment": "",
-        "new_referaf_payment": "",
-        "new_referal_user": ""
+        "new_payment": "⬆️  Recibido: pago al upline\nPlataforma: {0}\nID {1}  🗯️  ¡Enhorabuena! Sigue adelante",
+        "new_referaf_payment": "➕{0}  BNB | ID {1}\nPlataforma : {2}\nDe un: ID {3}\n🎯 ¡Enhorabuena! ",
+        "new_referal_user": "⬆️ ¡Se unió un nuevo socio!\n\n🆔 {0} se ha unido a tu equipo! Ahora tienes {1} socios."
     },
     "pt": {
-        "greating": "",
-        "set_account": "",
-        "successfully_set_account": "",
-        "select_language": "",
-        "successfully_set_language": "",
+        "greating": "Oi! Sou o bot, vamos ser amigos? Fui criado para que você não perca eventos importantes em sua conta do Cobra e possa ganhar mais ainda com minha ajuda!",
+        "set_account": "✏️ Indique carteira da sua conta no projeto Cobra para receber notificações instantâneas de eventos.",
+        "successfully_set_account": "Conta adicionada com sucesso 👌",
+        "select_language": "🌍 Escolhe idioma:",
+        "successfully_set_language": "✅ Idioma da interface alterada com sucesso",
         "new_payment": "",
         "new_referaf_payment": "",
         "new_referal_user": ""
