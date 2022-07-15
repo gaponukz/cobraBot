@@ -361,7 +361,7 @@ contract Pyramid {
         currentUserIdIndex += 1;
         userPartnersCount[inviterId] += 1;
 
-        emit NewUserRegisteredEvent(currentUserIdIndex - 1, inviterId, userPartnersCount[inviterId] - 1);
+        emit NewUserRegisteredEvent(currentUserIdIndex - 1, inviterId, userPartnersCount[inviterId]);
     }
 
     function joinToGame(uint8 gameId) public payable onlyRegistered {

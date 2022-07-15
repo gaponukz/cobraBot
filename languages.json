@@ -56,7 +56,7 @@
         "select_language": "🌍 Escolhe idioma:",
         "successfully_set_language": "✅ Idioma da interface alterada com sucesso",
         "new_payment": "",
-        "new_referaf_payment": "",
-        "new_referal_user": ""
+        "new_referaf_payment": "➕{0} BNB | ID {0}\nPatamar : {1}\nDe un: ID {2}\n🎯 Parabéns! ",
+        "new_referal_user": "⬆️ Novo parceiro ingressou!\n\n🆔 {0} juntou-se à sua equipe! Agora você tem {1} parceiros."
     }
 }

@@ -114,13 +114,11 @@ async def on_set_language_message_callback(message: types.Message):
     fr_button = types.InlineKeyboardButton('🇫🇷 FRENCH', callback_data = "language fr")
     pt_button = types.InlineKeyboardButton('🇵🇹 PORTUGAL', callback_data = "language pt")
     de_button = types.InlineKeyboardButton('🇩🇪 GERMAN', callback_data = "language de")
-    some_button = types.InlineKeyboardButton('some', callback_data = "foo")
+    es_button = types.InlineKeyboardButton('🇪🇸 SPANISH', callback_data = "language es")
 
     languages_buttons.row(en_button, fr_button)
-
     languages_buttons.row(ru_button, pt_button)
-
-    languages_buttons.row(de_button, some_button)
+    languages_buttons.row(de_button, es_button)
 
     await bot.send_message(
         message.from_user.id,
