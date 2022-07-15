@@ -44,6 +44,7 @@ async def handle_event(event):
 
     if event_args['event'] == 'NewGame':
         event_args = event_args['args']
+        # TODO: change new game message and add multy languages
         message = f"New game!\nPrice: {Web3.fromWei(event_args['amount'], 'ether')}\nID: {event_args['gameId']+1}"
 
         for user in signed_users:
