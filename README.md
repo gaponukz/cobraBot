@@ -9,8 +9,10 @@
 | `bot.py` | Telegram bot for notify all contract events |
 | `db.py` | It used in `bot.py` as database. TODO: replace it with mongoDB |
 | `signed_users.json` | It used in `db.py`, users list |
+| `notify_scheduler.json` | List of notification we will send to users (new game soon etc) |
 | `languages.json` | Config file with languages we will use in Telegram bot |
 | `contract.json` | Smart contract address and abi |
+| `logger.log` | Log file with all exception |
 
 ## Smart contract usage
 
