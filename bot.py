@@ -1,6 +1,7 @@
 import os
 import json
 import asyncio
+import datetime
 
 from db import UsersList
 
@@ -10,6 +11,15 @@ from web3 import HTTPProvider
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher import filters
 from dotenv import load_dotenv
+from loguru import logger
+
+logger.add(
+    "logger.log",
+    rotation="1 week",
+    format="{time} {level} {message}",
+    level="INFO",
+    mode="w"
+)
 
 load_dotenv()
 
@@ -48,8 +58,12 @@ async def handle_event(event):
         message = f"New game!\nPrice: {Web3.fromWei(event_args['amount'], 'ether')}\nID: {event_args['gameId']+1}"
 
         for user in signed_users:
-            await bot.send_message(user['id'], message)
-    
+            try:
+                await bot.send_message(user['id'], message)
+
+            except Exception as error:
+                logger.exception(error)
+
     elif event_args['event'] == 'GamePaymentEvent':
         event_args = event_args['args']
         user = signed_users.find_user_by_address(event_args['account'])
@@ -59,9 +73,12 @@ async def handle_event(event):
                 event_args['gameId']+1,
                 user['ref_id']
             )
+            try:
+                await bot.send_message(user['id'], message)
 
-            await bot.send_message(user['id'], message)
-    
+            except Exception as error:
+                logger.exception(error)
+            
     elif event_args['event'] == 'ReferalPaymentEvent':
         event_args = event_args['args']
         user = signed_users.find_user_by_refid(event_args['to'])
@@ -73,8 +90,12 @@ async def handle_event(event):
         )
 
         if user:
-            await bot.send_message(user['id'], message)
+            try:
+                await bot.send_message(user['id'], message)
 
+            except Exception as error:
+                logger.error(error)
+            
     elif event_args['event'] == 'NewUserRegisteredEvent':
         event_args = event_args['args']
         user = signed_users.find_user_by_refid(event_args['inviterId'])
@@ -85,8 +106,12 @@ async def handle_event(event):
                 event_args['partnersCount']
             )
 
-            await bot.send_message(user['id'], message)
+            try:
+                await bot.send_message(user['id'], message)
 
+            except Exception as error:
+                logger.exception(error)
+        
 @dp.message_handler(commands="start")
 async def on_start_message_callback(message: types.Message):
     find_user = signed_users.find_user_by_id(message.from_user.id)
@@ -142,6 +167,24 @@ async def on_set_account_refid_callback(message: types.Message):
 
     await message.reply(languages[user['language']]["successfully_set_account"])
 
+async def run_at(dt, coro):
+    now = datetime.datetime.now()
+    time_to_sleep = (dt - now).total_seconds()
+
+    if time_to_sleep <= 0:
+        return
+
+    await asyncio.sleep(time_to_sleep)
+    return await coro
+
+async def new_game_notify(message: str):
+    for user in signed_users:
+        try:
+            await bot.send_message(user['id'], message)
+
+        except Exception as error:
+            logger.exception(error)
+
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     event_filters = [
@@ -152,4 +195,18 @@ if __name__ == "__main__":
     ]
 
     loop.create_task(log_loop(event_filters, 1))
+
+    with open('notify_scheduler.json', 'r', encoding='utf-8') as out:
+        for event in json.load(out):
+            loop.create_task(run_at(
+                datetime.datetime(
+                    event['date']["year"],
+                    event['date']["month"],
+                    event['date']["day"],
+                    event['date']["hour"],
+                    event['date']["minute"]
+                ),
+                new_game_notify(event['message'])
+            ))
+    
     executor.start_polling(dp, skip_updates=True)
