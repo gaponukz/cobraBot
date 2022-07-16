@@ -128,25 +128,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "index",
-						"type": "uint256"
-					}
-				],
-				"name": "culcNextWinnerIndex",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "currentGameIdIndex",
 				"outputs": [
@@ -181,25 +162,6 @@
 					}
 				],
 				"name": "currentUserIndex",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "userAddress",
-						"type": "address"
-					}
-				],
-				"name": "getUserBalance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -442,11 +404,11 @@
 	},
 	"sources": {
 		"Contract.sol": {
-			"keccak256": "0x7dd680070b07006beb543025d8b8bda27161871a123c58f2f6a63ea13fb3ef26",
+			"keccak256": "0xe0ed1d27c179dc99c213aa65d071cad2747fdcab3db007d9a93f8d0359088825",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3e7b5921abd7fa33145400aef415ffc5abf84f792dd23e5b7f00bdb517662717",
-				"dweb:/ipfs/QmRRgD3J41XNwyRyGqKTKrwNU3bNkB7fWdxDUXxTf7PSb5"
+				"bzz-raw://f782ecc04c22ea02a30528dfaf0318d5ac84df05782576351f64d40dfbd480f9",
+				"dweb:/ipfs/QmWu6xgy2i5xAJ9V3PA57wcj4dmdGGQhpHfKmjWm4yTLEk"
 			]
 		}
 	},
