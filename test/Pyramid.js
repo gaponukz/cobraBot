@@ -33,7 +33,7 @@ describe("Pyramid contract", () => {
             */   
             assert.equal(await pyramid.currentUserIdIndex(), 1)
 
-            await pyramid.registerUserToGame(0, {from: accounts[19], value: web3.utils.toWei('1', 'ether')}) // afer adding new user
+            await pyramid.registerUserToGame(0, {from: accounts[19], value: web3.utils.toWei('0.0001', 'ether')}) // afer adding new user
             assert.equal(await pyramid.currentUserIdIndex(), 2) // we should have 2 users
         })
 
@@ -48,7 +48,7 @@ describe("Pyramid contract", () => {
             /**
              * @dev You can not register for more than 1 time
             */
-            await expect(pyramid.registerUserToGame(0, {from: accounts[0], value: web3.utils.toWei('1', 'ether')})).to.be.revertedWith("You are already registered")
+            await expect(pyramid.registerUserToGame(0, {from: accounts[0], value: web3.utils.toWei('0.0001', 'ether')})).to.be.revertedWith("You are already registered")
 
             /**
              * @dev You can not join to game if you have not enough amount
@@ -69,7 +69,7 @@ describe("Pyramid contract", () => {
             for (let index = 1; index < accountsNumber; index++) {
                 let account = accounts[index]
 
-                await pyramid.registerUserToGame(0, {from: account, value: web3.utils.toWei('1', 'ether')}) // register user to game
+                await pyramid.registerUserToGame(0, {from: account, value: web3.utils.toWei('0.0001', 'ether')}) // register user to game
                 await pyramid.joinToGame(0, {from: account, value: web3.utils.toWei('1', 'ether')}) // join to game
             }
             /**

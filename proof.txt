@@ -1,0 +1,31 @@
+1 user: contact balance 1 bnb
+2 users: contact balance 2 bnb
+3 users: contact balance 3-1=2 bnb (for 1)
+4 users: contact balance 3 bnb
+5 users: contact balance 4-1=3 bnb (for 2)
+6 users: contact balance 4 bnb
+7 users: contact balance 5-2=3 bnb (for 3 and 1)
+8 users: contact balance 4 bnb
+9 users: contact balance 5-1=4 bnb (for 4)
+10 users: contact balance 5
+11 users: contact balance 6-2=3 bnb (for 5 and 2)
+12 users: contact balance 4 bnb
+13 users: contact balance 5-1=4 bnb (for 6)
+14 users: contact balance 5 bnb
+15 users: contact balance 6-3=3 bnb (for 7 and 3 and 1)
+16 users: contact balance 3 bnb
+17 users: contact balance 4-1=3 bnb (for 8)
+18 users: contact balance 4
+19 users: contact balance 5-2=3 bnb (for 9 and 4)
+20 users: contact: contact balance 4
+21 users: contact balance 5-1=4 bnb (for 10)
+22 users: contact balance 5
+23 users: contact balance 6-3=3 bnb (for 11 and 5 and 2)
+24 users: contact balance 4 bnb
+25 users: contact: contact balance 5-1=4 bnb (for 12)
+26 users: contact balance 5
+27 users: contact balance 6-2=4 bnb (for 13 and 6)
+28 users: contact balance 5
+29 users: contact balance 6-1=5 bnb (for 14)
+30 users: contact balance 6 bnb
+31 users: contact balance 7-4=3 bnb (for 15 and 7 and 3 and 1)

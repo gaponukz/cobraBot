@@ -315,7 +315,7 @@ contract Pyramid {
         _joinToGame(gameId, sender, value);
     }
 
-    function culcNextWinnerIndex(uint256 index) internal pure returns(uint256) {
+    function culcNextWinnerIndex(uint256 index) public pure returns(uint256) {
         /**
             * @dev Python code example to generate winner indexes: 
             * def winner_generator(index: int) -> int:
@@ -336,6 +336,10 @@ contract Pyramid {
         return userAdress == contractOwner;
     }
 
+    function getUserBalance(address userAddress) public view returns(uint256) {
+        return userAddress.balance;
+    }
+
     function addGameLevel(uint256 amountToPay) public onlyOwner {
         /**
           * @dev This function add new game level (only contract owner access)
@@ -350,7 +354,7 @@ contract Pyramid {
           * @dev This function register user in game
         */
         require(registeredUsers[msg.sender].userAddress == address(0), "You are already registered");
-        require (msg.value == 1 ether, "For regiter in game you need pay 1 ether");
+        require (msg.value == 0.0001 ether, "For regiter in game you need pay");
 
         registeredUsers[msg.sender] = User(currentUserIdIndex, payable(msg.sender), inviterId);
         usersId[currentUserIdIndex] = msg.sender;
@@ -360,7 +364,7 @@ contract Pyramid {
         emit NewUserRegisteredEvent(currentUserIdIndex - 1, inviterId, userPartnersCount[inviterId]);
     }
 
-    function joinToGame(uint8 gameId) external payable onlyRegistered {
+    function joinToGame(uint8 gameId) public payable onlyRegistered {
         /**
           * @dev By this function user will join to game (gameId)
         */
