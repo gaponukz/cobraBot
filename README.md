@@ -28,3 +28,4 @@ Owner can add new game
 ```solidity
 function addGameLevel(uint256 amountToPay) public onlyOwner { }
 ```
+![contract_proof](https://user-images.githubusercontent.com/49754258/181386102-1bf8c22c-0288-4653-a65f-8b62a8033925.png)
