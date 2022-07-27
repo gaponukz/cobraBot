@@ -3,6 +3,7 @@ const { solidity } = require('ethereum-waffle')
 const chai = require('chai');
 
 chai.use(solidity);
+const accountsNumber = 1500
 
 // Vanilla Mocha test. Increased compatibility with tools that integrate Mocha.
 describe("Pyramid contract", () => {
@@ -10,6 +11,7 @@ describe("Pyramid contract", () => {
 
     before(async () => {
         accounts = await web3.eth.getAccounts()
+        // console.log(accounts.length)
     })
 
     describe("Deployment", () => {
@@ -33,7 +35,7 @@ describe("Pyramid contract", () => {
             */   
             assert.equal(await pyramid.currentUserIdIndex(), 1)
 
-            await pyramid.registerUserToGame(0, {from: accounts[19], value: web3.utils.toWei('0.0001', 'ether')}) // afer adding new user
+            await pyramid.registerUserToGame(0, {from: accounts[accountsNumber+1], value: web3.utils.toWei('0.0001', 'ether')}) // afer adding new user
             assert.equal(await pyramid.currentUserIdIndex(), 2) // we should have 2 users
         })
 
@@ -61,8 +63,7 @@ describe("Pyramid contract", () => {
             /**
              * @note We will test game 1 with accountsNumber accounts
              * all users will register in game and join to game 1 (except owner, he already registered)
-            */      
-            const accountsNumber = 18
+            */
 
             pyramid.joinToGame(0, {from: accounts[0], value: web3.utils.toWei('1', 'ether')}) // owner join to game
 
@@ -92,7 +93,6 @@ describe("Pyramid contract", () => {
             */  
             const accounts = await web3.eth.getAccounts()
             const pyramid = await Pyramid.new()
-            const accountsNumber = 18
 
             pyramid.joinToGame(0, {from: accounts[0], value: web3.utils.toWei('1', 'ether')}) // it is not important for owner
 
@@ -101,7 +101,7 @@ describe("Pyramid contract", () => {
                  * @note Accounts can not register without interface (only join to game)!
                 */  
                 let account = accounts[index]
-                await pyramid.registerUserToGame(0, {from: account, value: web3.utils.toWei('1', 'ether')}) // register user to game
+                await pyramid.registerUserToGame(0, {from: account, value: web3.utils.toWei('0.0001', 'ether')}) // register user to game
             }
 
             for (let index = 1; index < accountsNumber; index++) {
